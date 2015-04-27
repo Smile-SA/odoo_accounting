@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-14 08:38+0000\n"
-"PO-Revision-Date: 2015-04-14 08:38+0000\n"
+"POT-Creation-Date: 2015-04-27 16:50+0000\n"
+"PO-Revision-Date: 2015-04-27 16:50+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,6 +42,11 @@ msgstr "Date d’approbation"
 #: field:stock.picking,approval_user_id:0
 msgid "Approval user"
 msgstr "Valideur"
+
+#. module: smile_good_to_pay
+#: view:account.invoice:smile_good_to_pay.good_to_pay_invoice_supplier_form
+msgid "Approve"
+msgstr "Approuver"
 
 #. module: smile_good_to_pay
 #: view:account.invoice:smile_good_to_pay.good_to_pay_invoice_supplier_form
@@ -97,11 +102,6 @@ msgstr "Date de réception"
 #: model:ir.model,name:smile_good_to_pay.model_res_users
 msgid "Users"
 msgstr "Utilisateurs"
-
-#. module: smile_good_to_pay
-#: view:account.invoice:smile_good_to_pay.good_to_pay_invoice_supplier_form
-msgid "Approve"
-msgstr "Approuver"
 
 #. module: smile_good_to_pay
 #: selection:account.invoice,state:0
