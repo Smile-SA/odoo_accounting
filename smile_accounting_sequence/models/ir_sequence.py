@@ -47,18 +47,6 @@ class IrSequence(models.Model):
         Override method =====> ADD Pcount, Pmonth, Pyear
         """
         res = super(IrSequence, self)._interpolation_dict()
-#         if 'period_id' in self._context and 'type' in self._context and self._context['type'] in TYPEVALS:
-#             inv_type = self._context['type']
-#             period = self._context['period_id']
-#             pyear = datetime.strptime(period.date_start, "%Y-%m-%d").year
-#             pmonth = datetime.strptime(period.date_start, "%Y-%m-%d").month
-#             if len(str(pmonth)) == 1:
-#                 pmonth = '0'+str(pmonth)
-#             else:
-#                 pmonth = str(pmonth)
-#             self._cr.execute('select COUNT(*) from account_invoice where type = %s AND period_id = %s', (inv_type, period.id,))
-#             pcount = int(self._cr.fetchall()[0][0]) + 1
-#             res.update({'pcount': '%05d' % pcount, 'pyear': str(pyear), 'pmonth': str(pmonth)})
         if 'period_id' in self._context and 'journal_id' in self._context:
             period = self._context['period_id']
             journal_id = self._context['journal_id']

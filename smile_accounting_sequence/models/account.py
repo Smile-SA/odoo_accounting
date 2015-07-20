@@ -29,7 +29,7 @@ class AccountMove(models.Model):
 
     def post(self, cr, uid, ids, context=None):
         """
-        Override method =====> Generate number from Custom sequence instead of Journal sequence
+        Override method =====> Add journal_id & period_id to next_by_id context
         """
         if context is None:
             context = {}
@@ -54,12 +54,6 @@ class AccountMove(models.Model):
                         new_name = obj_sequence.next_by_id(cr, uid, journal.sequence_id.id, c)
                     else:
                         raise osv.except_osv(_('Error!'), _('Please define a sequence on the journal.'))
-#                 try:
-#                     move_seq_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'adc_account', 'seq_acc_move')[1]
-#                     context = {'fiscalyear_id': move.period_id.fiscalyear_id.id, 'period_id': move.period_id}
-#                     new_name = obj_sequence.next_by_id(cr, uid, move_seq_id, context)
-#                 except:
-#                     raise osv.except_osv(_('Sequence not found!'), _("Please define a sequence for account move!"))
                 if new_name:
                     self.write(cr, uid, [move.id], {'name': new_name})
 

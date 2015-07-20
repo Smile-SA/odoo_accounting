@@ -27,7 +27,7 @@
     ],
     'author': 'Smile',
     'description': """
-PCOUNT Functionality
+This module Manages invoices & account moves sequences in function of period
     """,
     'summary': '',
     'website': 'http://www.smile.fr',
