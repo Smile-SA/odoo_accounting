@@ -23,3 +23,5 @@ import account
 import purchase
 import stock
 import res_users
+import procurement
+import wizard_invoice_rejection_cause

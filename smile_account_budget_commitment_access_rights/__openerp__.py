@@ -25,6 +25,8 @@
     "depends": ["smile_account_budget_commitment"],
     "author": "Smile",
     "description": """
+            # Budget Access Rights (Groups)
+        Suggestions & Feedback to: mohamed.boujdid@smile-maroc.com
     """,
     "summary": "Budget Commitment Access Rights",
     "website": "http://www.smile.fr",

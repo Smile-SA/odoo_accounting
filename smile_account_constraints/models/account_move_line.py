@@ -19,18 +19,22 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, exceptions
+from openerp import models, api, exceptions
 from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
 
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    debit = fields.Float('Debit', digits_compute=dp.get_precision('Account'), readonly=True, states={'draft': [('readonly', False)]})
-    credit = fields.Float('Credit', digits_compute=dp.get_precision('Account'), readonly=True, states={'draft': [('readonly', False)]})
-    move_id = fields.Many2one('account.move', 'Journal Entry', ondelete="cascade", help="The move of this entry line.",
-                              select=2, required=True, readonly=True, states={'draft': [('readonly', False)]})
+#     @api.model
+#     def _setup_fields(self):
+#         super(AccountMoveLine, self)._setup_fields()
+#         self._fields['debit'].readonly = True
+#         self._fields['credit'].readonly = True
+#         self._fields['move_id'].readonly = True
+#         self._fields['debit'].states = {'draft': [('readonly', False)]}
+#         self._fields['credit'].states = {'draft': [('readonly', False)]}
+#         self._fields['move_id'].states = {'draft': [('readonly', False)]}
 
     @api.multi
     def unlink(self):

@@ -36,7 +36,7 @@
                     <field name="move_id" required="0"/>
                     <field name="debit" sum="Total Debit"/>
                     <field name="credit" sum="Total Credit"/>
-                    <field name="date_maturity" invisible="context.get('journal_type', False) not in ['sale','sale_refund','purchase','purchase_refund']"/>
+                    <field name="date_maturity"/>
                     <field name="date_created" string="Entry date"/>
                     <field name="reconcile_ref" string="Ref."/>
                     <field name="reconcile_partial_id"/>
@@ -77,6 +77,23 @@
             groups="account.group_account_user"
         />
 
+        <!-- Add MY Filter -->
+        <record id="view_account_move_line_filter_my_moves_inherit" model="ir.ui.view">
+            <field name="name">account.move.line.my.moves.search</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='next_partner']" position="after">
+                    <separator/>
+                    <filter string="My items" name="my_move_lines" domain="[('create_uid','=',uid)]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account.action_account_moves_all_a" model="ir.actions.act_window">
+            <field name="context">{'journal_type':'general', 'display_account_code': True, 'search_default_my_move_lines':1}</field>
+        </record>
+
         <!-- Supplier Due Date Payments-->
         <record id="view_account_move_line_filter_groupby_inherit" model="ir.ui.view">
             <field name="name">account.move.line.search</field>
@@ -85,6 +102,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//group/filter[@string='Period']" position="after">
                     <filter string="Maturity Date" name="date_maturity" domain="[]" context="{'group_by':'date_maturity'}"/>
+                    <filter string="Account move" name="acc_move" domain="[]" context="{'group_by':'move_id'}"/>
                 </xpath>
             </field>
         </record>

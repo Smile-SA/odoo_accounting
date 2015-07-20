@@ -27,10 +27,11 @@ class test_account_move(common.TransactionCase):
     def setUp(self):
         super(test_account_move, self).setUp()
         self.acc_move = self.env['account.move']
-        self.journal_id = self.ref('adc_data.ACH')
-        self.account_id = self.ref('.44566200')
-        self.cash_account_id = self.ref('.51211000')
 
+        # 1 Get journal_id & period_id & account_ids
+        self.journal_id = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1)[0]
+        self.account_id = self.env['account.account'].search([('type', '=', 'other')], limit=1)[0]
+        self.cash_account_id = self.env['account.account'].search([('type', '=', 'liquidity')], limit=1)[0]
         self.period_id = self.env['account.period'].search([('state', '=', 'draft')], limit=1)[0]
 
     def test_post_account_move(self):
@@ -39,9 +40,9 @@ class test_account_move(common.TransactionCase):
 
         vals = {'period_id': self.period_id.id,
                 'date': self.period_id.date_start,
-                'journal_id': self.journal_id,
+                'journal_id': self.journal_id.id,
                 'line_id': [(0, 0, {'name': 'test',
-                                    'account_id': self.cash_account_id,
+                                    'account_id': self.cash_account_id.id,
                                     'debit': 0.0,
                                     'credit': 0.0})]
                 }
@@ -56,12 +57,12 @@ class test_account_move(common.TransactionCase):
 
         vals1 = {'period_id': self.period_id.id,
                  'date': self.period_id.date_start,
-                 'journal_id': self.journal_id,
+                 'journal_id': self.journal_id.id,
                  'line_id': [(0, 0, {'name': 'test',
-                                     'account_id': self.cash_account_id,
+                                     'account_id': self.cash_account_id.id,
                                      'debit': 10.0}),
                              (0, 0, {'name': 'test',
-                                     'account_id': self.account_id,
+                                     'account_id': self.account_id.id,
                                      'credit': 10.0})]
                  }
         # 1 Create Move, Posted OK

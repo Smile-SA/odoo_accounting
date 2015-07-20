@@ -27,9 +27,11 @@
     ],
     'author': 'Smile',
     'description': """
-This module Add new menu items for:
-1. Supplier reconciliation
-2. Customer reconciliation
+This module adds new menu items for:
+1. allocation of supplier accounts
+2. allocation of customer accounts
+
+It also makes a domain on account type on transactions to allocate.
     """,
     'summary': '',
     'website': 'http://www.smile.fr',

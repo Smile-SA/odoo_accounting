@@ -24,18 +24,16 @@ from datetime import datetime
 import openerp.tests.common as common
 
 
-def get_simple_account_move_values(self, period_id, journal_id):
-    account_id = self.ref('.44566200')
-    cash_account_id = self.ref('.51211000')
+def get_simple_account_move_values(self, period_id, journal_id, account_id, cash_account_id):
     return {'period_id': period_id.id,
             'date': period_id.date_start,
-            'journal_id': journal_id,
+            'journal_id': journal_id.id,
             'line_id': [(0, 0, {'name': 'test',
-                                'account_id': cash_account_id,
+                                'account_id': cash_account_id.id,
                                 'debit': 50.0,
                                 }),
                         (0, 0, {'name': 'test_conterpart',
-                                'account_id': account_id,
+                                'account_id': account_id.id,
                                 'credit': 50.0,
                                 })
                         ]
@@ -49,12 +47,15 @@ class TestAccountJournalPeriodClose(common.TransactionCase):
         self.jour_per_obj = self.env['account.journal.period']
         fiscalyear_obj = self.env['account.fiscalyear']
         company_id = self.ref('base.main_company')
-        self.journal_id = self.ref('adc_data.ACH')
         today = datetime.now().date()
         last_year = today.replace(year=datetime.now().date().year-1)
         year = last_year.strftime('%Y')
 
-        # 1 Create Fiscal Year
+        # 1 Get journal_id & account_ids
+        self.journal_id = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1)[0]
+        self.account_id = self.env['account.account'].search([('type', '=', 'other')], limit=1)[0]
+        self.cash_account_id = self.env['account.account'].search([('type', '=', 'liquidity')], limit=1)[0]
+        # 2 Create Fiscal Year
         self.fiscalyear_id = fiscalyear_obj.create({
             'name': year + 'DEMO',
             'code': year + 'DEMO',
@@ -62,18 +63,21 @@ class TestAccountJournalPeriodClose(common.TransactionCase):
             'date_stop': year + '-12-31',
             'company_id': company_id
         })
-        # 2 Create Periods
+        # 3 Create Periods
         self.fiscalyear_id.create_period()
         self.period_id = self.env['account.period'].search([('fiscalyear_id', '=', self.fiscalyear_id.id)], limit=1)[0]
 
     def test_close_journal_close_period(self):
         # 1 Create Move
-        move_values = get_simple_account_move_values(self, self.period_id, self.journal_id)
+        print "########################## Create Account Move #############################"
+        move_values = get_simple_account_move_values(self, self.period_id, self.journal_id, self.account_id, self.cash_account_id)
         self.env['account.move'].create(move_values)
         # 2 Close Journal Period
-        journal_period_ids = self.jour_per_obj.search([('period_id', '=', self.period_id.id), ('journal_id', '=', self.journal_id)])
+        print "########################## Close Journal Period #############################"
+        journal_period_ids = self.jour_per_obj.search([('period_id', '=', self.period_id.id), ('journal_id', '=', self.journal_id.id)])
         journal_period_ids[0].action_done()
         # 3 Close Period
+        print "########################## Close Period #############################"
         close_period_wizard_id = self.env['account.period.close'].create({'sure': True})
         active_ids = {'active_ids': [self.period_id.id]}
         close_period_wizard_id.with_context(active_ids).data_save()

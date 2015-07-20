@@ -26,6 +26,18 @@ from openerp import models, fields, api, exceptions
 from openerp.tools.translate import _
 
 
+class RejectionCause(models.Model):
+    _name = "rejection.cause"
+    _description = "Rejection cause"
+
+    name = fields.Char('Name', size=256, required=True)
+    note = fields.Text('Note', size=512)
+
+    _sql_constraints = [
+        ('uniq_name', 'UNIQUE(name)', 'The name must be unique!'),
+    ]
+
+
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
@@ -34,13 +46,16 @@ class AccountInvoice(models.Model):
         super(AccountInvoice, self)._setup_fields()
         states = self._fields['state'].selection
         if 'wait' not in dict(self._fields['state'].selection):
-            states = states[:len(states) - 3] + [('wait', 'Wait')] + states[-3:]
+            states = states[:len(states) - 3] + [('wait', 'Wait'), ('no_bap', 'NO BAP')] + states[-3:]
         self._fields['state'].selection = states
 
-    reception_date = fields.Date(string='Reception date')
-    accounting_date = fields.Date(string='Accounting date', readonly=True)
-    approval_date = fields.Date(string='Approval date', readonly=True)
+    reception_date = fields.Date(string='Reception date', copy=False)
+    accounting_date = fields.Date(string='Accounting date', readonly=True, copy=False)
+    approval_date = fields.Date(string='Approval date', readonly=True, copy=False)
     approval_user_id = fields.Many2one('res.users', string='Approval user', default=lambda self: self.env.user)
+    rejection_cause_id = fields.Many2one('rejection.cause', 'Rejection cause', copy=False, readonly=True)
+    rejection_note = fields.Text('Reject Note', copy=False, readonly=True)
+    rejection_date = fields.Date(string='Rejection date', copy=False, readonly=True)
 
     @api.multi
     def invoice_validate(self):
@@ -63,6 +78,28 @@ class AccountInvoice(models.Model):
             2. Update approval date.
         """
         return self.write({'state': 'open', 'approval_date': time.strftime('%Y-%m-%d')})
+
+    @api.multi
+    def button_no_bap_invoice_wizard(self):
+        self.ensure_one()
+        return {
+            'name': _('Rejection cause'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': False,
+            'res_model': 'account.invoice.rejection.cause',
+            'domain': [],
+            'context': dict(self._context, default_invoice_id=self.id),
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'res_id': False,
+        }
+
+    @api.multi
+    def no_bap_invoice(self, rejection_cause_id, note):
+        self.ensure_one()
+        return self.write({'state': 'no_bap', 'rejection_cause_id': rejection_cause_id,
+                           'rejection_note': note, 'rejection_date': time.strftime('%Y-%m-%d')})
 
     @api.multi
     def action_date_assign(self):

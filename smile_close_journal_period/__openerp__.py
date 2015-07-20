@@ -27,8 +27,9 @@
     ],
     'author': 'Smile',
     'description': """
-This module Add:
-1. Account Journal period Menu/Tree/Form/Search
+This module Adds:
+Account Journal period Menu/Tree/Form/Search
+The business logic is implemented on OCA module account_journal_period_close
     """,
     'summary': '',
     'website': 'http://www.smile.fr',

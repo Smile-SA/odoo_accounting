@@ -48,22 +48,20 @@ msgstr "Jamais"
 #: code:addons/smile_account_partner_required/models/account.py:32
 #, python-format
 msgid "Optional"
-msgstr "Optionel"
+msgstr "Optionnel"
 
 #. module: smile_account_partner_required
 #: code:addons/smile_account_partner_required/models/account.py:53
 #, python-format
 msgid "Partner policy is set to 'Always' with account %s '%s' but the partner is missing in the account move line with label '%s'."
-msgstr "La politique sur le champ partenaire est 'Toujours' pour ce compte %s '%s' \n"
-"Mais le champ partenaire n\'est rempli sur l\'écriture comptable '%s' "
+msgstr "Le champ partenaire doit être rempli sur le compte %s '%s' de l'écriture comptable '%s'"
 
 #. module: smile_account_partner_required
 #: code:addons/smile_account_partner_required/models/account.py:58
 #, python-format
 msgid "Partner policy is set to 'Never' with account %s '%s' \n"
 "but the account move line with label '%s' has a partner '%s."
-msgstr "La politique sur le champ partenaire est 'Jamais' pour ce compte %s '%s' \n"
-"Alors sur l\'écriture comptable '%s' le champ partenaire est rempli par '%s."
+msgstr "Le champ partenaire ne peut être rempli sur le compte %s '%s' de l'écriture comptable '%s'"
 
 #. module: smile_account_partner_required
 #: field:account.account,partner_policy:0
@@ -74,6 +72,6 @@ msgstr "Politique pour le champ partenaire"
 #: help:account.account,partner_policy:0
 msgid "Set the policy for the partner field : if you select 'Optional', the accountant is free to put a partner on an account move line with this account ; if you select 'Always', the accountant will get an error message if there is no partner ; if you select 'Never', the accountant will get an error message if a partner is present."
 msgstr "Définir la politique pour le champ de partenaire:\n"
-"Si vous sélectionnez «Optionnel»,vous êtes libre de mettre un partenaire sur une écriture avec ce compte.\n"
-"Si vous sélectionnez «Toujours», un message d'erreur si vous ne renseignez pas le champ partenaire sur une écriture avec ce compte.\n" 
-"Si vous sélectionnez «Jamais», un message d'erreur si vous  renseignez le champ partenaire sur une écriture avec ce compte."
+"Si vous sélectionnez « Optionnel », vous pourrez renseigner un partenaire sur une écriture avec ce compte.\n"
+"Si vous sélectionnez « Toujours », les écritures sur ce compte devront comporter un partenaire.\n"
+"Si vous sélectionnez « Jamais », vous ne pourrez pas renseigner de partenaire sur les écritures avec ce compte."
