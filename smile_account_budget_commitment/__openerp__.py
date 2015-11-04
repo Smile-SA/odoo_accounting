@@ -45,7 +45,8 @@ Suggestions & Feedback to: corentin.pouhet-brunerie@smile.fr
         "security/ir.model.access.csv",
         "views/account_budget_view.xml",
         "views/res_users_view.xml",
-        "data/account_data.xml"
+        "views/account_journal_view.xml",
+        "data/account_data.xml",
     ],
     "demo": [
         "demo/account_demo.yml",

@@ -35,7 +35,7 @@ class ResUsers(models.Model):
     def check_commitment_limit(self, budget_post_id, amount):
         if not budget_post_id or not amount:
             return True
-        warning_msg = _("You are authorized to confirm this order.\nAmount for '%s' exceeds your commitment authorization")
+        warning_msg = _("You are not authorized to confirm this order.\nAmount for '%s' exceeds your commitment authorization")
         limits = [limit for limit in self.commitment_limit_ids if limit.budget_post_id.id == budget_post_id]
         if limits:
             for limit in limits:
