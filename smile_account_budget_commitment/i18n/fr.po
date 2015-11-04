@@ -38,6 +38,18 @@ msgid "Analytic Lines"
 msgstr "Lignes analytiques"
 
 #. module: smile_account_budget_commitment
+#: field:crossovered.budget.lines,available_amount:0
+#, python-format
+msgid "Available Amount"
+msgstr "Montant disponible"
+
+#. module: smile_account_budget_commitment
+#: field:crossovered.budget.lines,commitment_amount:0
+#, python-format
+msgid "Commitment Amount"
+msgstr "Montant d'engagement"
+
+#. module: smile_account_budget_commitment
 #: code:addons/smile_account_budget_commitment/models/analytic.py:51
 #, python-format
 msgid "Available amount [%s%s] is exceeded for the budget line '%s'"
