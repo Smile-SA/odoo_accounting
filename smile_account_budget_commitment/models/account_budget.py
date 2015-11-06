@@ -29,13 +29,15 @@ class BudgetLine(models.Model):
     _inherit = 'crossovered.budget.lines'
 
     @api.multi
-    def _get_sql_query(self):
-        return "SELECT SUM(al.amount) " \
-               "FROM account_analytic_line al " \
-               "LEFT JOIN account_analytic_journal aj ON al.journal_id = aj.id " \
-               "WHERE al.account_id=%s" \
-               "AND (al.date between to_date(%s,'yyyy-mm-dd') AND to_date(%s,'yyyy-mm-dd'))" \
-               "AND al.general_account_id=ANY(%s)"
+    def _get_sql_query(self, journal_clause, analytic_account_id, date_from, date_to, acc_ids):
+        sql_string = "SELECT SUM(al.amount) "\
+                     "FROM account_analytic_line al "\
+                     "LEFT JOIN account_analytic_journal aj ON al.journal_id = aj.id "\
+                     "WHERE al.account_id=%s "\
+                     "AND (al.date between to_date(%s,'yyyy-mm-dd') AND to_date(%s,'yyyy-mm-dd')) "\
+                     "AND al.general_account_id=ANY(%s)" + journal_clause
+        sql_args = (analytic_account_id, date_from, date_to, acc_ids)
+        return sql_string, sql_args
 
     @api.multi
     def _prac_amt(self, commitment=False):
@@ -54,8 +56,9 @@ class BudgetLine(models.Model):
             if 'wizard_date_to' in context:
                 date_to = context['wizard_date_to']
             if line.analytic_account_id.id:
-                self._cr.execute(self._get_sql_query() + journal_clause,
-                                 (line.analytic_account_id.id, date_from, date_to, acc_ids))
+                sql_string, sql_args = self._get_sql_query(journal_clause, line.analytic_account_id.id,
+                                                           date_from, date_to, acc_ids)
+                self._cr.execute(sql_string, sql_args)
                 result = self._cr.fetchone()[0]
             if result is None:
                 result = 0.0

@@ -39,10 +39,10 @@ class ResUsers(models.Model):
         limits = [limit for limit in self.commitment_limit_ids if limit.budget_post_id.id == budget_post_id]
         if limits:
             for limit in limits:
-                if limit.amount_limit < amount:
+                if limit.amount_limit < abs(amount):
                     raise Warning(warning_msg % limit.budget_post_id.display_name)
-        elif self.commitment_global_limit < amount:
-            raise Warning(warning_msg % limit.budget_post_id.display_name)
+        elif self.commitment_global_limit < abs(amount):
+            raise Warning(warning_msg % self.env['account.budget.post'].browse(budget_post_id).display_name)
         return True
 
     @api.model
