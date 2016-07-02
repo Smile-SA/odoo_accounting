@@ -24,6 +24,7 @@ from datetime import datetime
 
 from openerp import models, fields, api, exceptions
 from openerp.tools.translate import _
+from openerp.tools import float_is_zero
 
 STATES = [('draft', 'Draft'), ('valid', 'Valid')]
 
@@ -104,7 +105,7 @@ class AccountBankReconciliation(models.Model):
         if self.gap:
             currency_id = self.env.user.company_id.currency_id
             digits_rounding_precision = currency_id.rounding
-            if not float_is_zero(self.gap,digits_rounding_precision):
+            if not float_is_zero(self.gap, digits_rounding_precision):
                 raise exceptions.Warning(_('Invalid action!'), _('Gap must be 0!'))
         if not self.reconciliation_voucher_ids:
             raise exceptions.Warning(_('Invalid action!'), _('No line in reconciliation voucher!'))
