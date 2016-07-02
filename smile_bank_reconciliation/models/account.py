@@ -102,7 +102,10 @@ class AccountBankReconciliation(models.Model):
     def button_validate(self):
         self.ensure_one()
         if self.gap:
-            raise exceptions.Warning(_('Invalid action!'), _('Gap must be 0!'))
+            currency_id = self.env.user.company_id.currency_id
+            digits_rounding_precision = currency_id.rounding
+            if not float_is_zero(self.gap,digits_rounding_precision):
+                raise exceptions.Warning(_('Invalid action!'), _('Gap must be 0!'))
         if not self.reconciliation_voucher_ids:
             raise exceptions.Warning(_('Invalid action!'), _('No line in reconciliation voucher!'))
         for reconciliation_voucher in self.reconciliation_voucher_ids:
