@@ -51,6 +51,7 @@ class IrSequence(models.Model):
             period = self._context['period_id']
             journal_id = self._context['journal_id']
             pyear = datetime.strptime(period.date_start, "%Y-%m-%d").year
+            py = pyear % 100
             pmonth = datetime.strptime(period.date_start, "%Y-%m-%d").month
             if len(str(pmonth)) == 1:
                 pmonth = '0'+str(pmonth)
@@ -62,7 +63,7 @@ class IrSequence(models.Model):
                                 AND journal_id = %s
                                 AND period_id = %s""", ('posted', journal_id, period.id))
             pcount = int(self._cr.fetchall()[0][0]) + 1
-            res.update({'pcount': '%05d' % pcount, 'pyear': str(pyear), 'pmonth': str(pmonth)})
+            res.update({'pcount': '%04d' % pcount, 'pyear': str(pyear), 'py': str(py), 'pmonth': str(pmonth)})
         return res
 
     def _next(self, cr, uid, ids, context=None):

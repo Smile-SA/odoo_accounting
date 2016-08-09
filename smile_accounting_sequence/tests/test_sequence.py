@@ -138,7 +138,6 @@ class test_account(common.TransactionCase):
     def test_invoices_sequence(self):
         # Open Invoice1
         pcount = self.compute_pcount(self.journal_id.id, self.period_id1.id)
-        print "###################### PCOUNT1 ##############", pcount
         pmonth = self.today.month
         if len(str(pmonth)) == 1:
             pmonth = '0'+str(pmonth)
@@ -146,13 +145,11 @@ class test_account(common.TransactionCase):
             pmonth = str(pmonth)
         workflow.trg_validate(self.uid, 'account.invoice', self.inv_id1.id, 'invoice_open', self.cr)
         self.assertTrue(self.inv_id1.state == 'open')
-        print "###################### Sequence1  ##############", self.inv_id1.number
         self.assertTrue(self.inv_id1.move_id.name == 'SALE/%s/%s/%05d' % (self.today.year, pmonth, pcount))
         self.assertTrue(self.inv_id1.number == 'SALE/%s/%s/%05d' % (self.today.year, pmonth, pcount))
 
         # Open Invoice2
         pcount2 = self.compute_pcount(self.journal_id.id, self.period_id2.id)
-        print "###################### PCOUNT2 ##############", pcount2
         pmonth2 = self.today.month
         year2 = self.today.year
         if len(str(pmonth2)) == 1:
@@ -161,13 +158,11 @@ class test_account(common.TransactionCase):
             pmonth2 = str(pmonth2)
         workflow.trg_validate(self.uid, 'account.invoice', self.inv_id2.id, 'invoice_open', self.cr)
         self.assertTrue(self.inv_id2.state == 'open')
-        print "###################### Sequence1  ##############", self.inv_id2.number
         self.assertTrue(self.inv_id2.move_id.name == 'SALE/%s/%s/%05d' % (year2, pmonth2, pcount2))
         self.assertTrue(self.inv_id2.number == 'SALE/%s/%s/%05d' % (year2, pmonth2, pcount2))
 
         # Open Invoice3
         pcount3 = self.compute_pcount(self.journal_id.id, self.period_id3.id)
-        print "###################### PCOUNT3 ##############", pcount3
         pmonth3 = self.d1.month
         if len(str(pmonth3)) == 1:
             pmonth3 = '0'+str(pmonth3)
@@ -175,6 +170,5 @@ class test_account(common.TransactionCase):
             pmonth3 = str(pmonth3)
         workflow.trg_validate(self.uid, 'account.invoice', self.inv_id3.id, 'invoice_open', self.cr)
         self.assertTrue(self.inv_id2.state == 'open')
-        print "###################### Sequence1  ##############", self.inv_id3.number
         self.assertTrue(self.inv_id3.move_id.name == 'SALE/%s/%s/%05d' % (self.d1.year, pmonth3, pcount3))
         self.assertTrue(self.inv_id3.number == 'SALE/%s/%s/%05d' % (self.d1.year, pmonth3, pcount3))

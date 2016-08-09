@@ -25,7 +25,7 @@ msgstr "Pièce comptable"
 #: code:addons/smile_accounting_sequence/models/account.py:59
 #, python-format
 msgid "Error!"
-msgstr "Erreur!"
+msgstr "Erreur !"
 
 #. module: smile_accounting_sequence
 #: code:addons/smile_accounting_sequence/models/ir_sequence.py:89
@@ -54,6 +54,11 @@ msgstr "Please define a sequence on the journal."
 #, python-format
 msgid "Warning"
 msgstr "Warning"
+
+#. module: smile_accounting_sequence
+#: view:ir.sequence:smile_accounting_sequence.sequence_view_inv_count_inherit
+msgid "Year of the period Without Century: %(py)s"
+msgstr "Année de la période sans les siècles: %(py)s"
 
 #. module: smile_accounting_sequence
 #: view:ir.sequence:smile_accounting_sequence.sequence_view_inv_count_inherit

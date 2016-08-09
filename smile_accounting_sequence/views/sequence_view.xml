@@ -11,6 +11,7 @@
 		            <group>
 		                <label colspan="2" string="Number of invoice by period: %%(pcount)s"/>
 		                <label colspan="2" string="Year of the period: %%(pyear)s"/>
+                        <label colspan="2" string="Year of the period Without Century: %%(py)s"/>
 		                <label colspan="2" string="Month of the period: %%(pmonth)s"/>
 		            </group>
 		        </xpath>
